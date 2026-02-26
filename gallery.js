@@ -1,4 +1,6 @@
-// Basic 3D gallery using Three.js + OrbitControls
+// Basic 3D gallery using Three.js + OrbitControls (ES modules)
+import * as THREE from "https://unpkg.com/three@0.164.0/build/three.module.js";
+import { OrbitControls } from "https://unpkg.com/three@0.164.0/examples/jsm/controls/OrbitControls.js";
 
 const container = document.getElementById("scene-container");
 const captionEl = document.getElementById("caption");
@@ -103,7 +105,7 @@ function init() {
   renderer.outputEncoding = THREE.sRGBEncoding;
   container.appendChild(renderer.domElement);
 
-  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.08;
   controls.enablePan = false;
