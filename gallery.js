@@ -99,11 +99,11 @@ function buildGallery() {
   });
 
   const contentArtworks = [
-    { src: "content creation/PosterSchoolofRock-01.png" },
-    { src: "content creation/Screenshot 2026-02-26 151325.png" },
-    { src: "content creation/WhatsApp Image 2026-02-26 at 15.11.06.jpeg" },
-    { src: "content creation/WhatsApp Image 2026-02-26 at 15.11.07 (1).jpeg" },
-    { src: "content creation/WhatsApp Image 2026-02-26 at 15.11.07.jpeg" },
+    { src: "Art/Content Creation/PosterSchoolofRock-01.png" },
+    { src: "Art/Content Creation/Screenshot 2026-02-26 151325.png" },
+    { src: "Art/Content Creation/WhatsApp Image 2026-02-26 at 15.11.06.jpeg" },
+    { src: "Art/Content Creation/WhatsApp Image 2026-02-26 at 15.11.07 (1).jpeg" },
+    { src: "Art/Content Creation/WhatsApp Image 2026-02-26 at 15.11.07.jpeg" },
   ];
 
   contentArtworks.forEach((art, index) => {
