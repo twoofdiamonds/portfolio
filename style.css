@@ -1,0 +1,121 @@
+:root {
+  color-scheme: dark;
+  --bg: #05060a;
+  --bg-elevated: #0c0f18;
+  --accent: #5ce1e6;
+  --accent-soft: rgba(92, 225, 230, 0.2);
+  --text-main: #f7f7ff;
+  --text-muted: #a0a4c0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
+  color: var(--text-main);
+}
+
+body {
+  position: relative;
+}
+
+#scene-container {
+  position: fixed;
+  inset: 0;
+}
+
+.ui {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 10;
+  padding: 12px 16px;
+  border-radius: 999px;
+  background: radial-gradient(circle at top left, #1f2937, #020617);
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.75),
+    0 0 0 1px rgba(148, 163, 184, 0.18);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  backdrop-filter: blur(18px) saturate(160%);
+}
+
+.ui-title {
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.ui-subtitle {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.ui-caption {
+  margin-left: 12px;
+  padding-left: 12px;
+  border-left: 1px solid rgba(148, 163, 184, 0.35);
+  font-size: 0.8rem;
+  color: var(--accent);
+  max-width: min(32rem, 60vw);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .ui {
+    max-width: calc(100vw - 24px);
+    right: 12px;
+    border-radius: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .ui-caption {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
+    white-space: normal;
+  }
+}
+
+canvas {
+  display: block;
+}
+
+/* Subtle vignette and grain over the whole scene */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at top center, rgba(92, 225, 230, 0.08), transparent 55%),
+    radial-gradient(circle at bottom, rgba(15, 23, 42, 0.7), transparent 60%);
+  mix-blend-mode: screen;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.13;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+}
+
