@@ -57,6 +57,7 @@ const artworks = [
 ];
 
 const galleryEl = document.getElementById("gallery");
+const contentGalleryEl = document.getElementById("content-gallery");
 const lightboxEl = document.getElementById("lightbox");
 const lightboxImage = document.getElementById("lightbox-image");
 const lightboxCaption = document.getElementById("lightbox-caption");
@@ -95,6 +96,19 @@ function buildGallery() {
   artworks.forEach((art, index) => {
     const card = createCard(art, index);
     galleryEl.appendChild(card);
+  });
+
+  const contentArtworks = [
+    { src: "content creation/PosterSchoolofRock-01.png" },
+    { src: "content creation/Screenshot 2026-02-26 151325.png" },
+    { src: "content creation/WhatsApp Image 2026-02-26 at 15.11.06.jpeg" },
+    { src: "content creation/WhatsApp Image 2026-02-26 at 15.11.07 (1).jpeg" },
+    { src: "content creation/WhatsApp Image 2026-02-26 at 15.11.07.jpeg" },
+  ];
+
+  contentArtworks.forEach((art, index) => {
+    const card = createCard(art, index);
+    contentGalleryEl.appendChild(card);
   });
 }
 
