@@ -1,9 +1,9 @@
 :root {
   color-scheme: dark;
-  --bg: #05060a;
-  --bg-elevated: #0c0f18;
-  --accent: #5ce1e6;
-  --accent-soft: rgba(92, 225, 230, 0.2);
+  --bg: #030014;
+  --bg-elevated: #050821;
+  --accent: #f97316;
+  --accent-soft: rgba(249, 115, 22, 0.25);
   --text-main: #f7f7ff;
   --text-muted: #a0a4c0;
 }
@@ -20,7 +20,10 @@ body {
   padding: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
     "Segoe UI", sans-serif;
-  background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.24), transparent 55%),
+    radial-gradient(circle at 100% 0%, rgba(244, 114, 182, 0.24), transparent 55%),
+    radial-gradient(circle at 50% 110%, rgba(129, 140, 248, 0.55), #020617 70%, #000 100%);
   color: var(--text-main);
 }
 
@@ -31,8 +34,9 @@ body::before {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at top center, rgba(92, 225, 230, 0.08), transparent 55%),
-    radial-gradient(circle at bottom, rgba(15, 23, 42, 0.7), transparent 60%);
+    radial-gradient(circle at 10% 0%, rgba(251, 113, 133, 0.25), transparent 55%),
+    radial-gradient(circle at 90% 0%, rgba(56, 189, 248, 0.18), transparent 60%),
+    radial-gradient(circle at 50% 120%, rgba(5, 150, 105, 0.5), transparent 65%);
   mix-blend-mode: screen;
 }
 
@@ -83,10 +87,12 @@ body {
   position: relative;
   padding: 14px 18px;
   border-radius: 24px;
-  background: linear-gradient(120deg, rgba(15, 23, 42, 0.98), rgba(2, 6, 23, 0.96));
+  background:
+    linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 64, 175, 0.96)),
+    radial-gradient(circle at top left, rgba(244, 114, 182, 0.35), transparent 60%);
   box-shadow:
-    0 18px 45px rgba(0, 0, 0, 0.9),
-    0 0 0 1px rgba(148, 163, 184, 0.28);
+    0 22px 60px rgba(15, 23, 42, 0.95),
+    0 0 0 1px rgba(248, 250, 252, 0.12);
   backdrop-filter: blur(20px) saturate(180%);
 }
 
@@ -115,7 +121,9 @@ body {
   position: relative;
   overflow: hidden;
   border-radius: 18px;
-  background: radial-gradient(circle at top left, #1f2937, #020617);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(248, 250, 252, 0.06), transparent 60%),
+    radial-gradient(circle at 100% 120%, rgba(37, 99, 235, 0.65), rgba(15, 23, 42, 1));
   box-shadow:
     0 18px 35px rgba(0, 0, 0, 0.75),
     0 0 0 1px rgba(148, 163, 184, 0.16);
@@ -142,8 +150,8 @@ body {
   position: absolute;
   inset: -20%;
   background:
-    radial-gradient(circle at top left, rgba(251, 113, 133, 0.18), transparent 60%),
-    radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.2), transparent 70%);
+    radial-gradient(circle at top left, rgba(251, 113, 133, 0.35), transparent 60%),
+    radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.35), transparent 70%);
   opacity: 0;
   transform: translate3d(0, 16px, 0);
   transition:
