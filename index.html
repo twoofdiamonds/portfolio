@@ -3,17 +3,33 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>3D Art Gallery</title>
+    <title>Art Portfolio Gallery</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="ui">
-      <div class="ui-title">3D Art Gallery</div>
-      <div class="ui-subtitle">Drag to look around · Scroll to zoom</div>
-      <div class="ui-caption" id="caption">Hover a piece to see details</div>
+    <header class="shell">
+      <div class="shell-glow"></div>
+      <div class="shell-inner">
+        <h1 class="title">Art Portfolio</h1>
+        <p class="subtitle">A small collection of work, displayed softly.</p>
+        <p class="hint">Click any piece to view it large · Scroll to explore</p>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="gallery" id="gallery"></section>
+    </main>
+
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+      <div class="lightbox-backdrop" data-lightbox-close></div>
+      <figure class="lightbox-content">
+        <button class="lightbox-close" type="button" data-lightbox-close>&times;</button>
+        <img class="lightbox-image" id="lightbox-image" alt="" />
+        <figcaption class="lightbox-caption" id="lightbox-caption"></figcaption>
+      </figure>
     </div>
-    <div id="scene-container"></div>
-    <script type="module" src="gallery.js"></script>
+
+    <script src="gallery.js"></script>
   </body>
 </html>
 

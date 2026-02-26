@@ -1,282 +1,164 @@
-// Basic 3D gallery using Three.js + OrbitControls (ES modules)
-import * as THREE from "https://unpkg.com/three@0.164.0/build/three.module.js";
-import { OrbitControls } from "https://unpkg.com/three@0.164.0/examples/jsm/controls/OrbitControls.js";
+// Simple 2D gallery with lightbox and scroll‑in animations
 
-const container = document.getElementById("scene-container");
-const captionEl = document.getElementById("caption");
-
-// List of artworks in the Art/ folder
-// Title / description are editable labels for the UI
 const artworks = [
-  {
-    src: "Art/Screenshot 2026-02-26 143259.png",
-    title: "Concept sheet 1",
-  },
-  {
-    src: "Art/Screenshot 2026-02-26 143314.png",
-    title: "Concept sheet 2",
-  },
-  {
-    src: "Art/Screenshot 2026-02-26 143320.png",
-    title: "Concept sheet 3",
-  },
-  {
-    src: "Art/Screenshot 2026-02-26 143328.png",
-    title: "Concept sheet 4",
-  },
-  {
-    src: "Art/Screenshot 2026-02-26 143333.png",
-    title: "Concept sheet 5",
-  },
+  { src: "Art/Screenshot 2026-02-26 143259.png", title: "Concept sheet I" },
+  { src: "Art/Screenshot 2026-02-26 143314.png", title: "Concept sheet II" },
+  { src: "Art/Screenshot 2026-02-26 143320.png", title: "Concept sheet III" },
+  { src: "Art/Screenshot 2026-02-26 143328.png", title: "Concept sheet IV" },
+  { src: "Art/Screenshot 2026-02-26 143333.png", title: "Concept sheet V" },
   {
     src: "Art/WhatsApp Image 2026-02-26 at 14.28.44.jpeg",
-    title: "Slug-napper: Towards a Slug-Free Garden",
+    title: "Slug‑napper poster",
   },
   {
     src: "Art/WhatsApp Image 2026-02-26 at 14.28.44 (1).jpeg",
-    title: "Design poster 1",
+    title: "Poster 1",
   },
   {
     src: "Art/WhatsApp Image 2026-02-26 at 14.28.44 (2).jpeg",
-    title: "Design poster 2",
+    title: "Poster 2",
   },
   {
     src: "Art/WhatsApp Image 2026-02-26 at 14.28.44 (3).jpeg",
-    title: "Design poster 3",
+    title: "Poster 3",
   },
   {
     src: "Art/WhatsApp Image 2026-02-26 at 14.28.44 (4).jpeg",
-    title: "Design poster 4",
+    title: "Poster 4",
   },
   {
     src: "Art/WhatsApp Image 2026-02-26 at 14.28.44 (5).jpeg",
-    title: "Design poster 5",
+    title: "Poster 5",
   },
   {
     src: "Art/WhatsApp Image 2026-02-26 at 14.28.44 (6).jpeg",
-    title: "Design poster 6",
+    title: "Poster 6",
   },
   {
     src: "Art/WhatsApp Image 2026-02-26 at 14.28.44 (7).jpeg",
-    title: "Design poster 7",
+    title: "Poster 7",
   },
   {
     src: "Art/WhatsApp Image 2026-02-26 at 14.28.44 (8).jpeg",
-    title: "Design poster 8",
+    title: "Poster 8",
   },
   {
     src: "Art/WhatsApp Image 2026-02-26 at 14.28.44 (9).jpeg",
-    title: "Design poster 9",
+    title: "Poster 9",
   },
   {
     src: "Art/WhatsApp Image 2026-02-26 at 14.28.44 (10).jpeg",
-    title: "Design poster 10",
+    title: "Poster 10",
   },
   {
     src: "Art/WhatsApp Image 2026-02-26 at 14.28.44 (11).jpeg",
-    title: "Design poster 11",
+    title: "Poster 11",
   },
 ];
 
-let renderer, scene, camera, controls;
-let raycaster, mouse;
-let framedMeshes = [];
+const galleryEl = document.getElementById("gallery");
+const lightboxEl = document.getElementById("lightbox");
+const lightboxImage = document.getElementById("lightbox-image");
+const lightboxCaption = document.getElementById("lightbox-caption");
 
-init();
-animate();
+function createCard(art, index) {
+  const card = document.createElement("article");
+  card.className = "card";
+  card.style.transitionDelay = `${index * 40}ms`;
 
-function init() {
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x020617);
+  const inner = document.createElement("div");
+  inner.className = "card-inner";
 
-  const fov = 55;
-  const aspect = container.clientWidth / container.clientHeight;
-  const near = 0.1;
-  const far = 200;
-  camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-  camera.position.set(0, 2.5, 14);
+  const wrap = document.createElement("div");
+  wrap.className = "card-image-wrap";
 
-  renderer = new THREE.WebGLRenderer({
-    antialias: true,
-    powerPreference: "high-performance",
-  });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(container.clientWidth, container.clientHeight);
-  renderer.outputEncoding = THREE.sRGBEncoding;
-  container.appendChild(renderer.domElement);
+  const img = document.createElement("img");
+  img.className = "card-image";
+  img.src = art.src;
+  img.alt = art.title;
 
-  controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.08;
-  controls.enablePan = false;
-  controls.minDistance = 6;
-  controls.maxDistance = 28;
-  controls.minPolarAngle = 0.4;
-  controls.maxPolarAngle = Math.PI - 0.8;
+  const meta = document.createElement("div");
+  meta.className = "card-meta";
 
-  // Lighting
-  const hemi = new THREE.HemisphereLight(0x9ca3af, 0x020617, 0.55);
-  scene.add(hemi);
+  const dot = document.createElement("span");
+  dot.className = "dot";
 
-  const keyLight = new THREE.SpotLight(0x5ce1e6, 2, 40, Math.PI / 6, 0.4, 1);
-  keyLight.position.set(8, 10, 10);
-  keyLight.target.position.set(0, 3, 0);
-  scene.add(keyLight);
-  scene.add(keyLight.target);
+  const title = document.createElement("span");
+  title.className = "card-title";
+  title.textContent = art.title;
 
-  const fillLight = new THREE.PointLight(0x3b82f6, 1.3, 35);
-  fillLight.position.set(-10, 4, -6);
-  scene.add(fillLight);
+  const button = document.createElement("button");
+  button.className = "card-button";
+  button.type = "button";
+  button.addEventListener("click", () => openLightbox(art));
 
-  // Subtle floor to anchor shadows visually
-  const floorGeo = new THREE.CircleGeometry(26, 64);
-  const floorMat = new THREE.MeshStandardMaterial({
-    color: 0x020617,
-    roughness: 0.9,
-    metalness: 0.1,
-  });
-  const floor = new THREE.Mesh(floorGeo, floorMat);
-  floor.rotation.x = -Math.PI / 2;
-  floor.position.y = -0.01;
-  scene.add(floor);
+  meta.appendChild(dot);
+  meta.appendChild(title);
 
-  raycaster = new THREE.Raycaster();
-  mouse = new THREE.Vector2();
+  wrap.appendChild(img);
+  wrap.appendChild(meta);
 
-  createGallery();
+  inner.appendChild(wrap);
+  card.appendChild(inner);
+  card.appendChild(button);
 
-  window.addEventListener("resize", onWindowResize);
-  window.addEventListener("pointermove", onPointerMove);
+  return card;
 }
 
-function createGallery() {
-  const radius = 12;
-  const verticalOffset = 2.3;
-  const textureLoader = new THREE.TextureLoader();
-
+function buildGallery() {
   artworks.forEach((art, index) => {
-    const angle = (index / artworks.length) * Math.PI * 2;
-    const x = Math.cos(angle) * radius;
-    const z = Math.sin(angle) * radius;
-
-    // All frames use a common aspect ratio; the texture will letterbox if needed
-    const frameWidth = 4;
-    const frameHeight = 2.5;
-
-    const planeGeo = new THREE.PlaneGeometry(frameWidth, frameHeight);
-    const texture = textureLoader.load(
-      art.src,
-      () => {
-        texture.encoding = THREE.sRGBEncoding;
-        texture.anisotropy = 8;
-      },
-      undefined,
-      () => {
-        console.warn("Could not load", art.src);
-      }
-    );
-
-    const mat = new THREE.MeshStandardMaterial({
-      map: texture,
-      roughness: 0.6,
-      metalness: 0.1,
-    });
-
-    const artworkPlane = new THREE.Mesh(planeGeo, mat);
-    artworkPlane.position.set(x, verticalOffset, z);
-    artworkPlane.lookAt(0, verticalOffset, 0);
-
-    // Simple frame geometry behind the artwork
-    const frameThickness = 0.14;
-    const frameDepth = 0.12;
-    const outerFrameGeo = new THREE.BoxGeometry(
-      frameWidth + frameThickness,
-      frameHeight + frameThickness,
-      frameDepth
-    );
-    const innerCutoutGeo = new THREE.BoxGeometry(
-      frameWidth,
-      frameHeight,
-      frameDepth + 0.02
-    );
-
-    // Use BSP-like trick with two meshes layered to fake thickness
-    const frameMat = new THREE.MeshStandardMaterial({
-      color: 0x020617,
-      metalness: 0.5,
-      roughness: 0.3,
-    });
-    const frameOuter = new THREE.Mesh(outerFrameGeo, frameMat);
-    const frameInner = new THREE.Mesh(
-      innerCutoutGeo,
-      new THREE.MeshStandardMaterial({
-        color: 0x0b1020,
-        metalness: 0.2,
-        roughness: 0.8,
-      })
-    );
-    frameInner.scale.set(0.98, 0.98, 1);
-
-    const frameGroup = new THREE.Group();
-    frameGroup.add(frameOuter);
-    frameGroup.add(frameInner);
-    frameGroup.position.copy(artworkPlane.position);
-    frameGroup.quaternion.copy(artworkPlane.quaternion);
-    frameGroup.position.add(
-      frameGroup.getWorldDirection(new THREE.Vector3()).multiplyScalar(-0.08)
-    );
-
-    const group = new THREE.Group();
-    group.userData = { title: art.title, src: art.src };
-    group.add(frameGroup);
-    group.add(artworkPlane);
-
-    scene.add(group);
-    framedMeshes.push(group);
+    const card = createCard(art, index);
+    galleryEl.appendChild(card);
   });
 }
 
-function onWindowResize() {
-  camera.aspect = container.clientWidth / container.clientHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(container.clientWidth, container.clientHeight);
+function openLightbox(art) {
+  lightboxImage.src = art.src;
+  lightboxImage.alt = art.title;
+  lightboxCaption.textContent = art.title;
+  lightboxEl.classList.add("lightbox--open");
+  lightboxEl.setAttribute("aria-hidden", "false");
 }
 
-let hovered = null;
-
-function onPointerMove(event) {
-  const rect = renderer.domElement.getBoundingClientRect();
-  mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-  mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+function closeLightbox() {
+  lightboxEl.classList.remove("lightbox--open");
+  lightboxEl.setAttribute("aria-hidden", "true");
 }
 
-function updateHover() {
-  raycaster.setFromCamera(mouse, camera);
-
-  const objects = framedMeshes.flatMap((group) => group.children);
-  const intersects = raycaster.intersectObjects(objects, false);
-
-  if (intersects.length > 0) {
-    const group = intersects[0].object.parent;
-    if (hovered !== group) {
-      hovered = group;
-      captionEl.textContent = group.userData.title;
-      // Add subtle scale highlight
-      framedMeshes.forEach((g) => {
-        g.scale.setScalar(g === hovered ? 1.05 : 1.0);
-      });
+function setupLightbox() {
+  lightboxEl.addEventListener("click", (event) => {
+    if (event.target.dataset.lightboxClose !== undefined || event.target === lightboxEl) {
+      closeLightbox();
     }
-  } else if (hovered) {
-    hovered = null;
-    captionEl.textContent = "Hover a piece to see details";
-    framedMeshes.forEach((g) => g.scale.setScalar(1.0));
-  }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeLightbox();
+    }
+  });
 }
 
-function animate() {
-  requestAnimationFrame(animate);
-  controls.update();
-  updateHover();
-  renderer.render(scene, camera);
+function setupScrollAnimations() {
+  const cards = Array.from(document.querySelectorAll(".card"));
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("card--visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.2,
+    }
+  );
+
+  cards.forEach((card) => observer.observe(card));
 }
+
+buildGallery();
+setupLightbox();
+setupScrollAnimations();
 
