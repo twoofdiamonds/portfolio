@@ -75,28 +75,14 @@ function createCard(art, index) {
   const img = document.createElement("img");
   img.className = "card-image";
   img.src = art.src;
-  img.alt = art.title;
-
-  const meta = document.createElement("div");
-  meta.className = "card-meta";
-
-  const dot = document.createElement("span");
-  dot.className = "dot";
-
-  const title = document.createElement("span");
-  title.className = "card-title";
-  title.textContent = art.title;
+  img.alt = "";
 
   const button = document.createElement("button");
   button.className = "card-button";
   button.type = "button";
   button.addEventListener("click", () => openLightbox(art));
 
-  meta.appendChild(dot);
-  meta.appendChild(title);
-
   wrap.appendChild(img);
-  wrap.appendChild(meta);
 
   inner.appendChild(wrap);
   card.appendChild(inner);
@@ -114,8 +100,8 @@ function buildGallery() {
 
 function openLightbox(art) {
   lightboxImage.src = art.src;
-  lightboxImage.alt = art.title;
-  lightboxCaption.textContent = art.title;
+  lightboxImage.alt = "";
+  lightboxCaption.textContent = "";
   lightboxEl.classList.add("lightbox--open");
   lightboxEl.setAttribute("aria-hidden", "false");
 }

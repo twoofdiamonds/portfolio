@@ -111,12 +111,6 @@ body {
   color: var(--accent);
 }
 
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 22px;
-}
-
 .card {
   position: relative;
   overflow: hidden;
@@ -125,6 +119,10 @@ body {
   box-shadow:
     0 18px 35px rgba(0, 0, 0, 0.75),
     0 0 0 1px rgba(148, 163, 184, 0.16);
+  width: 100%;
+  display: inline-block;
+  break-inside: avoid;
+  margin: 0 0 18px;
   transform-origin: center center;
   transform: translateY(16px) scale(0.96);
   opacity: 0;
@@ -174,32 +172,6 @@ body {
   transition:
     transform 380ms cubic-bezier(0.16, 1, 0.3, 1),
     filter 380ms ease;
-}
-
-.card-meta {
-  position: absolute;
-  inset: auto 10px 10px;
-  padding: 6px 9px;
-  border-radius: 999px;
-  background: rgba(15, 23, 42, 0.88);
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  backdrop-filter: blur(12px);
-}
-
-.dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 999px;
-  background: var(--accent);
-  box-shadow: 0 0 12px rgba(92, 225, 230, 0.9);
-}
-
-.card-title {
-  color: var(--text-main);
 }
 
 .card-button {
@@ -310,9 +282,23 @@ body {
   .shell {
     padding-inline: 16px;
   }
+}
 
+.gallery {
+  column-count: 3;
+  column-gap: 18px;
+}
+
+@media (max-width: 900px) {
   .gallery {
-    gap: 16px;
+    column-count: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .gallery {
+    column-count: 1;
+    column-gap: 0;
   }
 }
 
